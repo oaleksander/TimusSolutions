@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.16)
+project(TimusSolutionsCpp)
+
+set(CMAKE_CXX_STANDARD 14)
+
+add_executable(2025 2025.c)
+add_executable(1296 1296.cpp)
+add_executable(1207 1207.cpp)
+add_executable(1322 1322.cpp)
+add_executable(1444 1444.cpp)
+add_executable(1494 1494.c)
+add_executable(1650 1650.cpp)
+add_executable(1080 1080.cpp)
+add_executable(1450 1450.cpp)
+add_executable(1162 1162.cpp)
