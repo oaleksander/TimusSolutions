@@ -1,7 +1,7 @@
 * linguist-vendored
-*.kt linguist-vendored=true
-*.c linguist-vendored=true
-*.cpp linguist-vendored=true
+*.kt linguist-vendored=false
+*.c linguist-vendored=false
+*.cpp linguist-vendored=false
 *.c linguist-detectable=true
 *.cpp linguist-detectable=true
 *.kt linguist-detectable=true
