@@ -1,0 +1,44 @@
+<html>
+<head>
+<title>1005.kt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #000000;}
+.s1 { color: #000080; font-weight: bold;}
+.s2 { color: #0000ff;}
+.s3 { color: #808080; font-style: italic;}
+.ln { color: #999999; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+1005.kt</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a>import java.util.*
+<a name="l2"><span class="ln">2    </span></a>
+<a name="l3"><span class="ln">3    </span></a><span class="s1">fun </span>main() {
+<a name="l4"><span class="ln">4    </span></a>    <span class="s1">val </span>scanner = Scanner(System.`in`)
+<a name="l5"><span class="ln">5    </span></a>    <span class="s1">val </span>n = scanner.nextInt()
+<a name="l6"><span class="ln">6    </span></a>    <span class="s1">val </span>stones = IntArray(n)
+<a name="l7"><span class="ln">7    </span></a>    <span class="s1">for </span>(i <span class="s1">in </span><span class="s2">0</span>..n)
+<a name="l8"><span class="ln">8    </span></a>        stones[i] = scanner.nextInt()
+<a name="l9"><span class="ln">9    </span></a>    <span class="s1">val </span>limit = <span class="s2">1 </span>shl n - <span class="s2">1 </span><span class="s3">// 2^(n-1)</span>
+<a name="l10"><span class="ln">10   </span></a>    <span class="s1">var </span>diff = Int.MAX_VALUE
+<a name="l11"><span class="ln">11   </span></a>    <span class="s1">for </span>(i <span class="s1">in </span><span class="s2">0</span>..limit) {
+<a name="l12"><span class="ln">12   </span></a>        <span class="s1">var </span>sum1 = <span class="s2">0</span>
+<a name="l13"><span class="ln">13   </span></a>        <span class="s1">var </span>sum2 = <span class="s2">0</span>
+<a name="l14"><span class="ln">14   </span></a>        <span class="s1">var </span>k = i
+<a name="l15"><span class="ln">15   </span></a>        <span class="s1">for </span>(j <span class="s1">in </span><span class="s2">0</span>..n) {
+<a name="l16"><span class="ln">16   </span></a>            <span class="s1">if </span>(k and <span class="s2">0x1 </span>== <span class="s2">0</span>) sum1 += stones[j] <span class="s1">else </span>sum2 += stones[j]
+<a name="l17"><span class="ln">17   </span></a>            k = k shr <span class="s2">1 </span><span class="s3">// calculate weights for each bit sequence</span>
+<a name="l18"><span class="ln">18   </span></a>        }
+<a name="l19"><span class="ln">19   </span></a>        (<span class="s1">if </span>(sum1 &gt;= sum2) sum1 - sum2 <span class="s1">else </span>sum2 - sum1).let {
+<a name="l20"><span class="ln">20   </span></a>            <span class="s1">if </span>(it &lt; diff) diff = it <span class="s3">// find min difference</span>
+<a name="l21"><span class="ln">21   </span></a>        }
+<a name="l22"><span class="ln">22   </span></a>    }
+<a name="l23"><span class="ln">23   </span></a>    println(diff)
+<a name="l24"><span class="ln">24   </span></a>}</pre>
+</body>
+</html>

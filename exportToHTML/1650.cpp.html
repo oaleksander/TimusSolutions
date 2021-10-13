@@ -1,0 +1,116 @@
+<html>
+<head>
+<title>1650.cpp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #808000;}
+.s1 { color: #000000;}
+.s2 { color: #008000; font-weight: bold;}
+.s3 { color: #000080; font-weight: bold;}
+.s4 { color: #808080; font-style: italic;}
+.s5 { color: #0000ff;}
+.ln { color: #999999; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+1650.cpp</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a><span class="s0">#include </span><span class="s2">&lt;string&gt;</span>
+<a name="l2"><span class="ln">2    </span></a><span class="s0">#include </span><span class="s2">&lt;set&gt;</span>
+<a name="l3"><span class="ln">3    </span></a><span class="s0">#include </span><span class="s2">&lt;map&gt;</span>
+<a name="l4"><span class="ln">4    </span></a><span class="s0">#include </span><span class="s2">&lt;unordered_map&gt;</span>
+<a name="l5"><span class="ln">5    </span></a><span class="s0">#include </span><span class="s2">&lt;iostream&gt;</span>
+<a name="l6"><span class="ln">6    </span></a><span class="s0">#include </span><span class="s2">&lt;algorithm&gt;</span>
+<a name="l7"><span class="ln">7    </span></a><span class="s0">#include </span><span class="s2">&lt;vector&gt;</span>
+<a name="l8"><span class="ln">8    </span></a>
+<a name="l9"><span class="ln">9    </span></a><span class="s3">using namespace </span>std;
+<a name="l10"><span class="ln">10   </span></a>
+<a name="l11"><span class="ln">11   </span></a><span class="s3">struct </span>City {
+<a name="l12"><span class="ln">12   </span></a>    <span class="s3">long long </span>economic;
+<a name="l13"><span class="ln">13   </span></a>    <span class="s3">int </span>days; <span class="s4">// Number of days on the top</span>
+<a name="l14"><span class="ln">14   </span></a>    string name;
+<a name="l15"><span class="ln">15   </span></a>} cities[<span class="s5">10000 </span>+ <span class="s5">50000</span>];
+<a name="l16"><span class="ln">16   </span></a>
+<a name="l17"><span class="ln">17   </span></a><span class="s3">struct </span>Person {
+<a name="l18"><span class="ln">18   </span></a>    <span class="s3">long long </span>money;
+<a name="l19"><span class="ln">19   </span></a>    City *location;
+<a name="l20"><span class="ln">20   </span></a>} persons[<span class="s5">10000</span>];
+<a name="l21"><span class="ln">21   </span></a>
+<a name="l22"><span class="ln">22   </span></a>map&lt;string, Person *&gt; personMap; <span class="s4">// Maps names into people</span>
+<a name="l23"><span class="ln">23   </span></a>map&lt;string, City *&gt; cityMap; <span class="s4">// Maps names into cities</span>
+<a name="l24"><span class="ln">24   </span></a>set&lt;pair&lt;<span class="s3">long long</span>, City *&gt;, greater&lt;&gt;&gt; top_cities; <span class="s4">// The cities ordered by economic</span>
+<a name="l25"><span class="ln">25   </span></a>
+<a name="l26"><span class="ln">26   </span></a><span class="s0">#define </span>CITYMAP_CITY second
+<a name="l27"><span class="ln">27   </span></a><span class="s0">#define </span>TOPCITIES_ECONOMIC first
+<a name="l28"><span class="ln">28   </span></a><span class="s0">#define </span>TOPCITIES_CITY second
+<a name="l29"><span class="ln">29   </span></a>
+<a name="l30"><span class="ln">30   </span></a><span class="s3">int </span>main() {
+<a name="l31"><span class="ln">31   </span></a>    <span class="s3">int </span>n, m, k, c = <span class="s5">0</span>;
+<a name="l32"><span class="ln">32   </span></a>    cin &gt;&gt; n;
+<a name="l33"><span class="ln">33   </span></a>    <span class="s3">for </span>(<span class="s3">int </span>i = <span class="s5">0</span>; i &lt; n; i++) {
+<a name="l34"><span class="ln">34   </span></a>        string name, location;
+<a name="l35"><span class="ln">35   </span></a>        <span class="s3">long long </span>money;
+<a name="l36"><span class="ln">36   </span></a>        cin &gt;&gt; name &gt;&gt; location &gt;&gt; money;
+<a name="l37"><span class="ln">37   </span></a>        personMap[name] = &amp;persons[i];
+<a name="l38"><span class="ln">38   </span></a>        <span class="s3">if </span>(cityMap[location] == <span class="s3">nullptr</span>)
+<a name="l39"><span class="ln">39   </span></a>            cityMap[location] = &amp;cities[c++];
+<a name="l40"><span class="ln">40   </span></a>        persons[i].location = cityMap[location];
+<a name="l41"><span class="ln">41   </span></a>        persons[i].money = money;
+<a name="l42"><span class="ln">42   </span></a>        cityMap[location]-&gt;name = location;
+<a name="l43"><span class="ln">43   </span></a>        cityMap[location]-&gt;economic += money;
+<a name="l44"><span class="ln">44   </span></a>    }
+<a name="l45"><span class="ln">45   </span></a>    <span class="s3">for </span>(<span class="s3">auto </span>&amp;&amp;citymap: cityMap)
+<a name="l46"><span class="ln">46   </span></a>        top_cities.insert(
+<a name="l47"><span class="ln">47   </span></a>                {citymap.CITYMAP_CITY-&gt;economic, citymap.CITYMAP_CITY});
+<a name="l48"><span class="ln">48   </span></a>    cin &gt;&gt; m &gt;&gt; k;
+<a name="l49"><span class="ln">49   </span></a>    <span class="s3">int </span>previous_day = <span class="s5">0</span>, day;
+<a name="l50"><span class="ln">50   </span></a>    string name, place;
+<a name="l51"><span class="ln">51   </span></a>    <span class="s3">for </span>(<span class="s3">int </span>i = <span class="s5">0</span>; i &lt; k; i++) {
+<a name="l52"><span class="ln">52   </span></a>        cin &gt;&gt; day &gt;&gt; name &gt;&gt; place;
+<a name="l53"><span class="ln">53   </span></a>        <span class="s3">if </span>(day != previous_day) {
+<a name="l54"><span class="ln">54   </span></a>            <span class="s3">auto </span>city2 = top_cities.begin();
+<a name="l55"><span class="ln">55   </span></a>            <span class="s3">auto </span>city1 = city2++;
+<a name="l56"><span class="ln">56   </span></a>            <span class="s3">if </span>(city2 == top_cities.end() ||
+<a name="l57"><span class="ln">57   </span></a>                city1-&gt;TOPCITIES_ECONOMIC &gt; city2-&gt;TOPCITIES_ECONOMIC)
+<a name="l58"><span class="ln">58   </span></a>                city1-&gt;TOPCITIES_CITY-&gt;days += day - previous_day;
+<a name="l59"><span class="ln">59   </span></a>        }
+<a name="l60"><span class="ln">60   </span></a>        <span class="s3">if </span>(cityMap[place] == <span class="s3">nullptr</span>) <span class="s4">// New city found</span>
+<a name="l61"><span class="ln">61   </span></a>        {
+<a name="l62"><span class="ln">62   </span></a>            cityMap[place] = &amp;cities[c++];
+<a name="l63"><span class="ln">63   </span></a>            cityMap[place]-&gt;name = place;
+<a name="l64"><span class="ln">64   </span></a>        }
+<a name="l65"><span class="ln">65   </span></a>        <span class="s4">// Update the set and the city data structure itself</span>
+<a name="l66"><span class="ln">66   </span></a>        <span class="s3">auto </span>nextplace = cityMap[place];
+<a name="l67"><span class="ln">67   </span></a>        <span class="s3">auto </span>person = personMap[name];
+<a name="l68"><span class="ln">68   </span></a>        <span class="s3">auto </span>previous_place = person-&gt;location;
+<a name="l69"><span class="ln">69   </span></a>        <span class="s3">auto </span>previous_money = previous_place-&gt;economic;
+<a name="l70"><span class="ln">70   </span></a>        top_cities.erase({previous_money, previous_place});
+<a name="l71"><span class="ln">71   </span></a>        previous_place-&gt;economic -= person-&gt;money;
+<a name="l72"><span class="ln">72   </span></a>        top_cities.insert({previous_place-&gt;economic, previous_place});
+<a name="l73"><span class="ln">73   </span></a>        top_cities.erase({nextplace-&gt;economic, nextplace});
+<a name="l74"><span class="ln">74   </span></a>        nextplace-&gt;economic += person-&gt;money;
+<a name="l75"><span class="ln">75   </span></a>        top_cities.insert({nextplace-&gt;economic, nextplace});
+<a name="l76"><span class="ln">76   </span></a>        person-&gt;location = nextplace;
+<a name="l77"><span class="ln">77   </span></a>        previous_day = day;
+<a name="l78"><span class="ln">78   </span></a>    }
+<a name="l79"><span class="ln">79   </span></a>    <span class="s3">if </span>(m != previous_day) {
+<a name="l80"><span class="ln">80   </span></a>        <span class="s3">auto </span>city2 = top_cities.begin();
+<a name="l81"><span class="ln">81   </span></a>        <span class="s3">auto </span>city = city2++;
+<a name="l82"><span class="ln">82   </span></a>        <span class="s3">if </span>(city2 == top_cities.end() ||
+<a name="l83"><span class="ln">83   </span></a>            city-&gt;TOPCITIES_ECONOMIC &gt; city2-&gt;TOPCITIES_ECONOMIC)
+<a name="l84"><span class="ln">84   </span></a>            city-&gt;TOPCITIES_CITY-&gt;days += m - previous_day;
+<a name="l85"><span class="ln">85   </span></a>    }
+<a name="l86"><span class="ln">86   </span></a>    vector&lt;pair&lt;string, <span class="s3">int</span>&gt;&gt; output;
+<a name="l87"><span class="ln">87   </span></a>    <span class="s3">for </span>(<span class="s3">auto </span>&amp;topcity: top_cities)
+<a name="l88"><span class="ln">88   </span></a>        <span class="s3">if </span>(topcity.TOPCITIES_CITY-&gt;days)
+<a name="l89"><span class="ln">89   </span></a>            output.emplace_back(topcity.TOPCITIES_CITY-&gt;name,
+<a name="l90"><span class="ln">90   </span></a>                                topcity.TOPCITIES_CITY-&gt;days);
+<a name="l91"><span class="ln">91   </span></a>    sort(output.begin(), output.end());
+<a name="l92"><span class="ln">92   </span></a>    <span class="s3">for </span>(<span class="s3">auto </span>&amp;out: output)
+<a name="l93"><span class="ln">93   </span></a>        cout &lt;&lt; out.first &lt;&lt; <span class="s2">&quot; &quot; </span>&lt;&lt; out.second &lt;&lt; <span class="s2">&quot;</span><span class="s3">\n</span><span class="s2">&quot;</span>;
+<a name="l94"><span class="ln">94   </span></a>}</pre>
+</body>
+</html>

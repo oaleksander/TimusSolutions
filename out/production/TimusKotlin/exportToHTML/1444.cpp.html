@@ -1,0 +1,65 @@
+<html>
+<head>
+<title>1444.cpp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #808000;}
+.s1 { color: #000000;}
+.s2 { color: #008000; font-weight: bold;}
+.s3 { color: #000080; font-weight: bold;}
+.s4 { color: #0000ff;}
+.s5 { color: #808080; font-style: italic;}
+.ln { color: #999999; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+1444.cpp</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a><span class="s0">#include </span><span class="s2">&lt;iostream&gt;</span>
+<a name="l2"><span class="ln">2    </span></a><span class="s0">#include </span><span class="s2">&lt;algorithm&gt;</span>
+<a name="l3"><span class="ln">3    </span></a><span class="s0">#include </span><span class="s2">&lt;cmath&gt;</span>
+<a name="l4"><span class="ln">4    </span></a>
+<a name="l5"><span class="ln">5    </span></a><span class="s3">using namespace </span>std;
+<a name="l6"><span class="ln">6    </span></a>
+<a name="l7"><span class="ln">7    </span></a><span class="s3">struct </span>point {
+<a name="l8"><span class="ln">8    </span></a>    <span class="s3">int </span>x, y;
+<a name="l9"><span class="ln">9    </span></a>    <span class="s3">int </span>id;
+<a name="l10"><span class="ln">10   </span></a>} points[<span class="s4">30000</span>];
+<a name="l11"><span class="ln">11   </span></a>
+<a name="l12"><span class="ln">12   </span></a><span class="s3">int </span>comparator(point &amp;a, point &amp;b) {
+<a name="l13"><span class="ln">13   </span></a>    <span class="s3">if </span>(a.x * b.y == a.y * b.x &amp;&amp; a.x * b.x + a.y * b.y &gt;= <span class="s4">0</span>)
+<a name="l14"><span class="ln">14   </span></a>        <span class="s5">// Points with the same angle are sorted by distance</span>
+<a name="l15"><span class="ln">15   </span></a>        <span class="s3">return </span>a.x * a.x + a.y * a.y &lt; b.x * b.x + b.y * b.y;
+<a name="l16"><span class="ln">16   </span></a>    <span class="s3">return </span>atan2(a.y, a.x) &lt; atan2(b.y, b.x);
+<a name="l17"><span class="ln">17   </span></a>}
+<a name="l18"><span class="ln">18   </span></a>
+<a name="l19"><span class="ln">19   </span></a><span class="s3">int </span>main() {
+<a name="l20"><span class="ln">20   </span></a>    <span class="s3">int </span>n;
+<a name="l21"><span class="ln">21   </span></a>    scanf(<span class="s2">&quot;%d&quot;</span>, &amp;n);
+<a name="l22"><span class="ln">22   </span></a>    <span class="s3">for </span>(<span class="s3">int </span>i = <span class="s4">0</span>; i &lt; n; i++) {
+<a name="l23"><span class="ln">23   </span></a>        scanf(<span class="s2">&quot;%d %d&quot;</span>, &amp;points[i].x, &amp;points[i].y);
+<a name="l24"><span class="ln">24   </span></a>        points[i].id = i;
+<a name="l25"><span class="ln">25   </span></a>    }
+<a name="l26"><span class="ln">26   </span></a>    <span class="s3">for </span>(<span class="s3">int </span>i = n - <span class="s4">1</span>; i &gt;= <span class="s4">0</span>; i--)
+<a name="l27"><span class="ln">27   </span></a>        <span class="s5">// Translate everything towards first point</span>
+<a name="l28"><span class="ln">28   </span></a>        points[i].x -= points[<span class="s4">0</span>].x, points[i].y -= points[<span class="s4">0</span>].y;
+<a name="l29"><span class="ln">29   </span></a>    sort(points, points + n, comparator);
+<a name="l30"><span class="ln">30   </span></a>    <span class="s3">int </span>start = <span class="s4">0</span>;
+<a name="l31"><span class="ln">31   </span></a>    <span class="s3">for </span>(<span class="s3">int </span>i = <span class="s4">0</span>; i &lt; n - <span class="s4">1</span>; i++) {
+<a name="l32"><span class="ln">32   </span></a>        point p0 = points[<span class="s4">0</span>], p1 = points[i], p2 = points[i + <span class="s4">1</span>];
+<a name="l33"><span class="ln">33   </span></a>        <span class="s3">int </span>d1x = p1.x - p0.x, d2y = p2.y - p0.y, d1y = p1.y - p0.y, d2x = p2.x - p0.x;
+<a name="l34"><span class="ln">34   </span></a>        <span class="s3">int </span>x = d1x * d2y - d1y * d2x, d = d1x * d2x + d1y * d2y;
+<a name="l35"><span class="ln">35   </span></a>        <span class="s3">if </span>(x &lt; <span class="s4">0 </span>|| x == <span class="s4">0 </span>&amp;&amp; d &lt; <span class="s4">0</span>) { <span class="s5">// 180deg turn, start at that point instead</span>
+<a name="l36"><span class="ln">36   </span></a>            start = i;
+<a name="l37"><span class="ln">37   </span></a>            <span class="s3">break</span>;
+<a name="l38"><span class="ln">38   </span></a>        }
+<a name="l39"><span class="ln">39   </span></a>    }
+<a name="l40"><span class="ln">40   </span></a>    printf(<span class="s2">&quot;%d</span><span class="s3">\n</span><span class="s2">%d</span><span class="s3">\n</span><span class="s2">&quot;</span>, n, (points[<span class="s4">0</span>].id + <span class="s4">1</span>));
+<a name="l41"><span class="ln">41   </span></a>    <span class="s3">for </span>(<span class="s3">int </span>i = <span class="s4">0</span>; i &lt; n - <span class="s4">1</span>; i++)
+<a name="l42"><span class="ln">42   </span></a>        printf(<span class="s2">&quot;%d</span><span class="s3">\n</span><span class="s2">&quot;</span>, (points[(start + i) % (n - <span class="s4">1</span>) + <span class="s4">1</span>].id + <span class="s4">1</span>));
+<a name="l43"><span class="ln">43   </span></a>}</pre>
+</body>
+</html>

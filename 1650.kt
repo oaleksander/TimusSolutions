@@ -3,7 +3,7 @@ import java.util.*
 fun main() {
     val cities: MutableMap<String, Int> = mutableMapOf() //<name,economy>
     val cities2: PriorityQueue<Pair<String, Int>> = PriorityQueue { p1, p2 -> p1.second - p2.second }
-    val billionaires: MutableMap<String, Int> = mutableMapOf()//<name,money>
+    val billionaires: MutableMap<String, Int> = mutableMapOf()//<name,economic>
     val topcities: SortedMap<String, Int> = sortedMapOf()//<name,days>
     var start_day = 1;
     val n = readLine()!!.toInt()
